@@ -1,0 +1,19 @@
+function color=Blinn_Phong_shading(obj_color,light_color,surface_points,centre,origin,Light_position,m,diffusion,speculation,specular_k,ambient)
+
+
+md=diffusion; ms=speculation; sk=specular_k;
+x0=origin(1); y0=origin(2); z0=origin(3);
+x=surface_points(1); y=surface_points(2); z=surface_points(3);
+xc=centre(1); yc=centre(2); zc=centre(3);
+xL=Light_position(1); yL=Light_position(2); zL=Light_position(3);
+
+N=2*[x-xc; y-yc; z-zc]; N=N/norm(N);
+L=[x-xL; y-yL; z-zL]; L=L/norm(L);
+V=[x-x0; y-y0; z-z0]; V=V/norm(V);
+H=-(L+V); H=H/norm(H);
+%R=L-2*dot(L,N).*N -([x; y; z]+ 0.01.*N); R=R/norm(R);
+
+% Blinn-Phong shading model
+color=m*obj_color - md*obj_color*max(dot(L,N),0)+ ms*light_color*max(dot(H,N),0)^sk + ambient;
+
+end
